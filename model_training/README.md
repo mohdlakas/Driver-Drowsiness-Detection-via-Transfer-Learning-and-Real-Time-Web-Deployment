@@ -41,7 +41,7 @@ model_training/
 2. Install dependencies (pinned in `requirements.txt`):
 
 ```bash
-cd "/mnt/d/Desktop/Bashar/driver_drowsiness/5- Final_Project_Deliverables/model_training"
+cd "/mnt/d/Desktop/model_training"
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
