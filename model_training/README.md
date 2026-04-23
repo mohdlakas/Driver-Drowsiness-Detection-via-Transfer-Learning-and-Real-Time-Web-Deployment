@@ -70,7 +70,7 @@ Example command:
 
 ```bash
 mkdir -p ~/.kaggle
-cp "/mnt/d/Desktop/Bashar/driver_drowsiness/kaggle.json" ~/.kaggle/kaggle.json
+cp "/mnt/d/Desktop/driver_drowsiness/kaggle.json" ~/.kaggle/kaggle.json
 chmod 600 ~/.kaggle/kaggle.json
 ```
 
