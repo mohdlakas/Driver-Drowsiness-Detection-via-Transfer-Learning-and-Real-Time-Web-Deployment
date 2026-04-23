@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Driver Drowsiness Control Center</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <h1>Driver Drowsiness Control Center</h1>
+        <p>Realtime camera inference, alert audio, and session tracking without Streamlit.</p>
+      </header>
+
+      <section class="grid">
+        <article class="panel controls">
+          <h2>Controls</h2>
+
+          <label class="field">
+            <span>Driver Name</span>
+            <input id="driverName" type="text" value="Guest Driver" />
+          </label>
+
+          <label class="field">
+            <span>Camera</span>
+            <div class="row">
+              <select id="cameraSelect"></select>
+              <button id="refreshCamerasBtn" class="btn secondary" type="button">Refresh</button>
+            </div>
+          </label>
+
+          <div class="row">
+            <button id="startBtn" class="btn primary" type="button">Start Camera</button>
+            <button id="stopBtn" class="btn secondary" type="button">Stop</button>
+          </div>
+
+          <label class="field">
+            <span>Drowsy Alert Threshold: <b id="thresholdValue">0.75</b></span>
+            <input id="thresholdSlider" type="range" min="0.50" max="0.99" step="0.01" value="0.75" />
+          </label>
+
+          <label class="field">
+            <span>Inference Interval (ms): <b id="intervalValue">450</b></span>
+            <input id="intervalSlider" type="range" min="150" max="1200" step="50" value="450" />
+          </label>
+
+          <label class="field">
+            <span>History Log Interval (sec): <b id="historyIntervalValue">1.5</b></span>
+            <input id="historyIntervalSlider" type="range" min="0.5" max="5" step="0.1" value="1.5" />
+          </label>
+
+          <div class="checks">
+            <label><input id="audioToggle" type="checkbox" checked /> Audio Alert</label>
+            <label><input id="realtimeToggle" type="checkbox" checked /> Realtime Inference</label>
+            <label><input id="preferIntegratedToggle" type="checkbox" checked /> Prefer Integrated Cam</label>
+          </div>
+
+          <div class="status">
+            <div><span class="k">Backend:</span> <span id="backendStatus">Checking...</span></div>
+            <div><span class="k">Device:</span> <span id="deviceStatus">-</span></div>
+            <div><span class="k">Model:</span> <span id="modelStatus">-</span></div>
+          </div>
+        </article>
+
+        <article class="panel video-panel">
+          <h2>Realtime Video</h2>
+          <div class="video-wrap">
+            <video id="video" autoplay playsinline muted></video>
+            <canvas id="hiddenCanvas"></canvas>
+            <div id="videoBadge" class="video-badge idle">IDLE</div>
+          </div>
+
+          <div class="result-box" id="resultBox">
+            <div class="metrics">
+              <div class="metric">
+                <span class="k">Prediction</span>
+                <span id="predictionText" class="v">-</span>
+              </div>
+              <div class="metric">
+                <span class="k">Confidence</span>
+                <span id="confidenceText" class="v">-</span>
+              </div>
+              <div class="metric">
+                <span class="k">Latency</span>
+                <span id="latencyText" class="v">-</span>
+              </div>
+            </div>
+
+            <div class="prob">
+              <div class="label">Drowsy</div>
+              <div class="bar"><div id="drowsyBar" class="fill risk"></div></div>
+              <div id="drowsyText" class="pct">0.0%</div>
+            </div>
+
+            <div class="prob">
+              <div class="label">Non Drowsy</div>
+              <div class="bar"><div id="nonDrowsyBar" class="fill safe"></div></div>
+              <div id="nonDrowsyText" class="pct">0.0%</div>
+            </div>
+
+            <p id="alertText" class="alert-text neutral">Waiting for inference...</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="grid second">
+        <article class="panel">
+          <h2>Snapshot Upload</h2>
+          <label class="field">
+            <span>Analyze a still image</span>
+            <input id="uploadInput" type="file" accept="image/*" />
+          </label>
+          <button id="analyzeUploadBtn" class="btn primary" type="button">Analyze Upload</button>
+          <img id="uploadPreview" class="preview" alt="Upload preview" />
+        </article>
+
+        <article class="panel">
+          <h2>Session History</h2>
+          <div class="row">
+            <button id="downloadCsvBtn" class="btn secondary" type="button">Download CSV</button>
+            <button id="clearHistoryBtn" class="btn danger" type="button">Clear History</button>
+          </div>
+          <div class="history-wrap">
+            <table id="historyTable">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Driver</th>
+                  <th>Source</th>
+                  <th>Prediction</th>
+                  <th>Confidence</th>
+                  <th>Drowsy</th>
+                  <th>Latency</th>
+                </tr>
+              </thead>
+              <tbody id="historyBody"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>
